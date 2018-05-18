@@ -1,5 +1,9 @@
 #pragma once
 
+#define FULL_UNVISIBLE -1
+#define PART_VISIBLE 1
+#define FULL_VISIBLE 0
+
 typedef struct Visibility
 {
 	int T1;
@@ -8,4 +12,5 @@ typedef struct Visibility
 	int T4;
 } Visibility;
 
-bool isVisible(Visibility vis);
+// Степень видимости отрезка(полная видимость\невидимость, частичная)
+int checkCut(Visibility vis1, Visibility vis2);
