@@ -208,7 +208,7 @@ Cut* cutInside(Cut cut, Secatel sec)
 	up = move(&borderUp, &whoUp, cut, sec, tg);
 	down = move(&borderDown, &whoDown, cut, sec, tg);
 
-	//debugCutVisibility(cut, "it comes in cutInside", 0);
+	debugCutVisibility(cut, "it comes in cutInside", 0);
 
 	if (left)
 		debugPoint(*left, "left", 0);

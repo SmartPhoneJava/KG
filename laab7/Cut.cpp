@@ -49,3 +49,16 @@ void debugCut(Cut cut, const char* text, int number)
 	debug("x2_cut", cut.end.x);
 	debug("y2_cut", cut.end.y);
 }
+
+void debugCutVisibility(Cut cut, const char* text, int number)
+{
+	debug(text, number);
+
+	Visibility v1 = cut.begin.vis;
+	Visibility v2 = cut.end.vis;
+
+	debugVisibility(v1, "Visibility of first point",
+		isPointVisible(v1));
+	debugVisibility(v2, "Visibility of second point",
+		isPointVisible(v2));
+}

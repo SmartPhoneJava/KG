@@ -34,3 +34,30 @@ int checkCut(Visibility vis1, Visibility vis2)
 
 	return result;
 }
+
+void debugVisibility(Visibility visibility,
+	const char* text, int number)
+{
+	debug(text, number);
+	debug("is_left", visibility.T1);
+	debug("is_right", visibility.T2);
+	debug("is_up", visibility.T3);
+	debug("is_down", visibility.T4);
+}
+
+Visibility* newVisibility(int t1,
+	int t2, int t3, int t4)
+{
+	Visibility *visibility = (Visibility*)calloc(1, sizeof(Visibility));
+	visibility->T1 = t1;
+	visibility->T2 = t2;
+	visibility->T3 = t3;
+	visibility->T4 = t4;
+	return visibility;
+}
+
+void deleteVisibility(Visibility **v)
+{
+	free(*v);
+	*v = NULL;
+}

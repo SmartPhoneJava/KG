@@ -20,3 +20,6 @@ Cut* newCut(Point a, Point b);
 void deleteCut(Cut **cut);
 
 void debugCut(Cut cut, const char* text, int number);
+
+void debugCutVisibility(Cut cut, const char* text, int number);
+

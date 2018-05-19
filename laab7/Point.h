@@ -16,7 +16,7 @@ Point* newPoint(int x, int y);
 
 void deletePoint(Point **point);
 
-void setPointVisibility(Point p, Secatel s);
+void setPointVisibility(Point &p, Secatel s);
 
 bool isPointFree(Point point);
 

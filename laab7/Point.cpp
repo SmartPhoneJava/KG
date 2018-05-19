@@ -24,27 +24,31 @@ bool isPointFree(Point point)
 	return (x && y);
 }
 
-void setPointVisibility(Point p, Secatel s)
+void setPointVisibility(Point &p, Secatel s)
 {
+	int t1, t2, t3, t4;
+	//debug("try to set Visibility", 0);
 	if (p.x < s.Xmin)  
-		p.vis.T1 = 1;
+		t1 = 1;
 	else
-		p.vis.T1 = 0;
+		t1 = 0;
 
 	if (p.x > s.Xmax)  
-		p.vis.T2 = 1;
+		t2 = 1;
 	else
-		p.vis.T2 = 0;
+		t2 = 0;
 
 	if (p.y < s.Ymin)
-		p.vis.T3 = 1;
+		t3 = 1;
 	else
-		p.vis.T3 = 0;
+		t3 = 0;
 
 	if (p.y > s.Ymax)  
-		p.vis.T4 = 1;
+		t4 = 1;
 	else
-		p.vis.T4 = 0;
+		t4 = 0;
+
+	p.vis = *newVisibility(t1, t2, t3, t4);
 }
 
 void debugPoint(Point point, const char* text, int number)
