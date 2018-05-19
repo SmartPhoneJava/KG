@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Visibility.h"
 
 // Видима ли точка. 0 если видима, >0 если невидима

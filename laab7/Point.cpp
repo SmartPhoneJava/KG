@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Point.h"
 #include "Secatel.h"
 #include <iostream>
@@ -14,6 +15,13 @@ void deletePoint(Point **point)
 {
 	free(*point);
 	*point = NULL;
+}
+
+bool isPointFree(Point point)
+{
+	bool x = (point.x == NO_POINT);
+	bool y = (point.y == NO_POINT);
+	return (x && y);
 }
 
 void setPointVisibility(Point p, Secatel s)

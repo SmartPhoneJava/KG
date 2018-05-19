@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Secatel.h"
 #include <iostream>
 

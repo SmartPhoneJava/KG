@@ -5,6 +5,7 @@
 
 void debug(const char* text, int number)
 {
+
 	char str[BUFFER_MAX_SIZE];
 	sprintf_s(str, "%s: %d \n", text, number);
 

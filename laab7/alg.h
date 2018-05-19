@@ -1,3 +1,8 @@
 #pragma once
+#include "Point.h"
+#include "Cut.h"
+#include "Debug.h"
+#include "Secatel.h"
+#include <iostream>
 
-#define NO_POINT -1
+Cut* cutInside(Cut cut, Secatel sec);

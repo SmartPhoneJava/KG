@@ -13,3 +13,7 @@ typedef struct Cut
 } Cut;
 
 double cutTan(Cut cut);
+
+Cut* newCut(Point a, Point b);
+
+void deleteCut(Cut **cut);
