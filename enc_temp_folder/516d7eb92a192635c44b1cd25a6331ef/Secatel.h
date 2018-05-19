@@ -1,5 +1,4 @@
 #pragma once
-#include "Debug.h"
 
 typedef struct Secatel
 {
@@ -12,6 +11,3 @@ typedef struct Secatel
 Secatel *newSecatel(int up, int right, int down, int left);
 
 void deleteSecatel(Secatel **s);
-
-void debugSecatel(Secatel secatel,
-	const char* text, int number);

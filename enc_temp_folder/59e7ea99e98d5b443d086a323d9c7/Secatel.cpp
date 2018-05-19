@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Secatel.h"
+#include <iostream>
 
 Secatel* newSecatel(int up, int right, int down, int left)
 {
@@ -16,14 +17,4 @@ void deleteSecatel(Secatel **s)
 {
 	free(*s);
 	*s = NULL;
-}
-
-void debugSecatel(Secatel secatel,
-	const char* text, int number)
-{
-	debug(text, number);
-	debug("secatel.Xmax", secatel.Xmax);
-	debug("secatel.Xmin", secatel.Xmin);
-	debug("secatel.Ymin", secatel.Ymin);
-	debug("secatel.Ymax", secatel.Ymax);
 }

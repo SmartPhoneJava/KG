@@ -46,10 +46,3 @@ void setPointVisibility(Point p, Secatel s)
 	else
 		p.vis.T4 = 0;
 }
-
-void debugPoint(Point point, const char* text, int number)
-{
-	debug(text, number);
-	debug("x_point", point.x);
-	debug("y_point", point.y);
-}

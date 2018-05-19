@@ -2,7 +2,6 @@
 
 #include "Point.h"
 #include "Visibility.h"
-#include "Debug.h"
 
 #define VERTICAL 1000000
 #define HORIZONTAL 0
@@ -18,5 +17,3 @@ double cutTan(Cut cut);
 Cut* newCut(Point a, Point b);
 
 void deleteCut(Cut **cut);
-
-void debugCut(Cut cut, const char* text, int number);

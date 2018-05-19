@@ -150,6 +150,7 @@
     <ClInclude Include="alg.h" />
     <ClInclude Include="Cut.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="laab7.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Resource.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="alg.cpp" />
     <ClCompile Include="Cut.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="laab7.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Secatel.cpp" />

@@ -40,12 +40,3 @@ double cutTan(Cut cut)
 		return (double)dy/(double)dx;
 	}
 }
-
-void debugCut(Cut cut, const char* text, int number)
-{
-	debug(text, number);
-	debug("x1_cut", cut.begin.x);
-	debug("y1_cut", cut.begin.y);
-	debug("x2_cut", cut.end.x);
-	debug("y2_cut", cut.end.y);
-}
