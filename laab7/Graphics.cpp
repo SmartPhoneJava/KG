@@ -87,6 +87,15 @@ void drawTable(HDC hdc, Table* table, DWORD color)
 	}
 }
 
+void drawPicture(HWND hWnd, Table* table,
+	Secatel *sec, DWORD color)
+{
+	HDC hdc = GetDC(hWnd);
+	drawTable(hdc, table, color);
+	drawSecatel(hdc, *sec, RED);
+	ReleaseDC(hWnd, hdc);
+}
+
 void cleanRectOld(HWND hWnd, LONG left,
 	LONG top, LONG right, LONG bottom)
 {

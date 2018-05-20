@@ -4,7 +4,7 @@
 // Установка обычного текста
 // https://stackoverflow.com/questions/6858524/convert-char-to-lpwstr
 // https://stackoverflow.com/questions/29847036/convert-char-to-wchar-t-using-mbstowcs-s
-void setCharText(HWND hwnd, char* text)
+void setCharText(HWND hwnd, const char* text)
 {
 	wchar_t wtext[BUFFER_MAX_SIZE];
 	size_t outSize;
@@ -29,13 +29,15 @@ x, y - значения параметров которые обновятся
 count - счётчик кликов
 */
 void mouseClicked(LPARAM lParam, int borderX,
-	int &count, int &x, int &y, bool can)
+	int &x, int &y, bool can, HWND hWnd,
+	int ID1, int ID2)
 {
 	if ((LOWORD(lParam) < borderX) && can)
 	{
 		x = LOWORD(lParam);
 		y = HIWORD(lParam);
-		count++;
+		setIntText(hWnd, ID1, x);
+		setIntText(hWnd, ID2, y);
 	}
 }
 
@@ -143,7 +145,7 @@ void updateRow(int index, HWND hWnd,
 		GetDlgItem(hWnd, ID_EDIT_X1), x1);
 
 	updateColumn(1, lvi, listview,
-		GetDlgItem(hWnd, ID_EDIT_Y1), y2);
+		GetDlgItem(hWnd, ID_EDIT_Y1), y1);
 
 	updateColumn(2, lvi, listview,
 		GetDlgItem(hWnd, ID_EDIT_X2), x2);
@@ -153,8 +155,8 @@ void updateRow(int index, HWND hWnd,
 }
 
 void updatingListView(HWND hWnd, LPARAM lParam, 
-	int &listview_choosen, int &x1,
-	int &y1, int &x2, int &y2)
+	int &listview_choosen, int &x1, int &y1,
+	int &x2, int &y2, Table* table, Secatel *sec)
 {
 	HWND listview = GetDlgItem(hWnd, ID_LISTVIEW);
 
@@ -174,9 +176,18 @@ void updatingListView(HWND hWnd, LPARAM lParam,
 
 	updateRow(index, hWnd, x1, y1, x2, y2);
 
+	cleanRectOld(hWnd, 0, 0, 300, 0);
+
 	HDC hdc = GetDC(hWnd);
+
+	drawPicture(hWnd, table, sec, RGB(0, 0, 50));
+
 	drawEllipse(hdc, x1, y1, 4, RGB(0, 0, 0));
+	drawEllipse(hdc, x1, y1, 3, RGB(200, 200, 200));
+
+	drawEllipse(hdc, x2, y2, 4, RGB(0, 0, 0));
 	drawEllipse(hdc, x2, y2, 3, RGB(200, 200, 200));
+
 	ReleaseDC(hWnd, hdc);
 }
 
@@ -218,4 +229,145 @@ void changing(HWND hWnd, int listview_choosen,
 
 	EnableWindow(GetDlgItem(hWnd, ID_BUTTON_DELETE), FALSE);
 	EnableWindow(GetDlgItem(hWnd, ID_BUTTON_CHANGE), FALSE);
+}
+
+void creating(HWND hWnd)
+{
+	TCHAR text_edit[BUFFER_MAX_SIZE] = "edit";
+	TCHAR text_button[BUFFER_MAX_SIZE] = "button";
+	TCHAR text_add[BUFFER_MAX_SIZE] = "Добавить";
+	TCHAR text_delete[BUFFER_MAX_SIZE] = "Удалить";
+	TCHAR text_clear[BUFFER_MAX_SIZE] = "Очистить";
+	TCHAR text_build[BUFFER_MAX_SIZE] = "Построить";
+	TCHAR text_change[BUFFER_MAX_SIZE] = "Изменить";
+	TCHAR text_0[BUFFER_MAX_SIZE] = "0";
+	TCHAR text_x1[BUFFER_MAX_SIZE] = "X1";
+	TCHAR text_y1[BUFFER_MAX_SIZE] = "Y1";
+	TCHAR text_x2[BUFFER_MAX_SIZE] = "X2";
+	TCHAR text_y2[BUFFER_MAX_SIZE] = "Y2";
+	TCHAR text_x[BUFFER_MAX_SIZE] = "X";
+	TCHAR text_y[BUFFER_MAX_SIZE] = "Y";
+	TCHAR text_sec [BUFFER_MAX_SIZE] = "Координаты 1-ой вершины отсекателя";
+	TCHAR text_status[BUFFER_MAX_SIZE] = "Точки отрезков";
+
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+
+	DWORD usual = WS_CHILD | WS_BORDER | WS_VISIBLE | DT_CENTER;
+
+	CreateWindow(text_button, text_add, WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, // | BS_OWNERDRAW,
+		rc.right - 300, 2, 100, 20, hWnd, (HMENU)ID_BUTTON_ADD, NULL, NULL);
+	CreateWindow(text_button, text_delete, WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, // | BS_OWNERDRAW,
+		rc.right - 200, 2, 100, 20, hWnd, (HMENU)ID_BUTTON_DELETE, NULL, NULL);
+	CreateWindow(text_button, text_build, WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, // | BS_OWNERDRAW,
+		rc.right - 200, 2, 100, 20, hWnd, (HMENU)ID_BUTTON_BUILD, NULL, NULL);
+	CreateWindow(text_button, text_clear, WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE, // | BS_OWNERDRAW,
+		rc.right - 200, 2, 100, 20, hWnd, (HMENU)ID_BUTTON_CLEAR, NULL, NULL);
+	CreateWindow(text_button, text_clear, WS_CHILD | BS_PUSHBUTTON,
+		rc.right - 200, 22, 100, 20, hWnd, (HMENU)ID_BUTTON_CLEAR, NULL, NULL);
+	CreateWindow(text_button, text_change, WS_CHILD | BS_PUSHBUTTON | WS_VISIBLE,
+		rc.right - 100, 2, 98, 20, hWnd, (HMENU)ID_BUTTON_CHANGE, NULL, NULL);
+
+	CreateWindow(text_edit, text_0, usual, rc.right - 265,
+		50, 100, 20, hWnd, (HMENU)ID_EDIT_X1, NULL, NULL);
+	CreateWindow(text_edit, text_x1, usual, rc.right - 300,
+		50, 30, 20, hWnd, (HMENU)ID_NEDIT_X1, NULL, NULL);
+	CreateWindow(text_edit, text_0, usual, rc.right - 265,
+		75, 100, 20, hWnd, (HMENU)ID_EDIT_Y1, NULL, NULL);
+	CreateWindow(text_edit, text_y1, usual, rc.right - 300,
+		75, 30, 20, hWnd, (HMENU)ID_NEDIT_Y1, NULL, NULL);
+
+	CreateWindow(text_edit, text_0, usual,
+		rc.right - 115, 50, 100, 20, hWnd, (HMENU)ID_EDIT_X2, NULL, NULL);
+	CreateWindow(text_edit, text_x2, usual,
+		rc.right - 150, 50, 30, 20, hWnd, (HMENU)ID_NEDIT_X2, NULL, NULL);
+	CreateWindow(text_edit, text_0, usual,
+		rc.right - 115, 75, 100, 20, hWnd, (HMENU)ID_EDIT_Y2, NULL, NULL);
+	CreateWindow(text_edit, text_y2, usual,
+		rc.right - 150, 75, 30, 20, hWnd, (HMENU)ID_NEDIT_Y2, NULL, NULL);
+
+	CreateWindow(text_edit, text_status, usual, rc.right - 300,
+		100, 100, 20, hWnd, (HMENU)ID_TEXT_STATUS, NULL, NULL);
+	CreateWindow(text_edit, text_sec, usual, rc.right - 300,
+		100, 100, 20, hWnd, (HMENU)ID_TEXT_SEC, NULL, NULL);
+	CreateWindow(text_edit, text_x, usual, rc.right - 150,
+		125, 30, 20, hWnd, (HMENU)ID_NEDIT_XS, NULL, NULL);
+	CreateWindow(text_edit, text_y, usual, rc.right - 150,
+		125, 30, 20, hWnd, (HMENU)ID_NEDIT_YS, NULL, NULL);
+	CreateWindow(text_edit, text_0, usual, rc.right - 150,
+		125, 30, 20, hWnd, (HMENU)ID_EDIT_XS, NULL, NULL);
+	CreateWindow(text_edit, text_0, usual, rc.right - 150,
+		125, 30, 20, hWnd, (HMENU)ID_EDIT_YS, NULL, NULL);
+
+	DWORD style_listview = WS_CHILD | LVS_REPORT | LVS_EX_FULLROWSELECT | WS_VSCROLL | WS_VISIBLE;
+
+	CreateWindow(WC_LISTVIEW, text_0, style_listview, rc.right - 300, 125,
+		300, rc.bottom - 100, hWnd, (HMENU)ID_LISTVIEW, NULL, NULL);
+
+	EnableWindow(GetDlgItem(hWnd, ID_BUTTON_DELETE), FALSE);
+	EnableWindow(GetDlgItem(hWnd, ID_BUTTON_CHANGE), FALSE);
+	ListView_SetExtendedListViewStyle(GetDlgItem(hWnd, ID_LISTVIEW), LVS_EX_FULLROWSELECT);
+
+	LV_COLUMN lc; lc.mask = LVCF_TEXT | LVCF_SUBITEM | LVCF_WIDTH;
+	lc.fmt = LVCFMT_CENTER;
+	lc.pszText = text_x1; lc.iSubItem = 0; lc.cx = 60;
+	SendDlgItemMessage(hWnd, ID_LISTVIEW, LVM_INSERTCOLUMN, 0, (LPARAM)&lc);
+	lc.pszText = text_y1; lc.iSubItem = 1; lc.cx = 60;
+	SendDlgItemMessage(hWnd, ID_LISTVIEW, LVM_INSERTCOLUMN, 1, (LPARAM)&lc);
+	lc.pszText = text_x2; lc.iSubItem = 2; lc.cx = 60;
+	SendDlgItemMessage(hWnd, ID_LISTVIEW, LVM_INSERTCOLUMN, 2, (LPARAM)&lc);
+	lc.pszText = text_y2; lc.iSubItem = 3; lc.cx = 60;
+	SendDlgItemMessage(hWnd, ID_LISTVIEW, LVM_INSERTCOLUMN, 3, (LPARAM)&lc);
+
+	SendDlgItemMessage(hWnd, ID_NEDIT_X1, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_NEDIT_Y1, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_NEDIT_X2, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_NEDIT_Y2, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_NEDIT_XS, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_NEDIT_YS, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_TEXT_STATUS, EM_SETREADONLY, 1, 0);
+	SendDlgItemMessage(hWnd, ID_TEXT_SEC, EM_SETREADONLY, 1, 0);
+}
+
+// Перерисовка экрана
+void moving(HWND hWnd, int with_clean)
+{
+	RECT rc;
+	GetClientRect(hWnd, &rc);
+
+	if (with_clean)
+	{
+		cleanRectOld(hWnd, 0, 0, 300, 0);
+	}
+
+	MoveWindow(GetDlgItem(hWnd, ID_BUTTON_ADD), rc.right - 300, 2, 100, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_BUTTON_DELETE), rc.right - 200, 2, 100, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_BUTTON_BUILD), rc.right - 300, 22, 100, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_BUTTON_CLEAR), rc.right - 200, 22, 100, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_BUTTON_CHANGE), rc.right - 100, 2, 98, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_X1), rc.right - 300, 50, 25, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_X1), rc.right - 270, 50, 110, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_Y1), rc.right - 270, 75, 110, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_Y1), rc.right - 300, 75, 25, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_X2), rc.right - 140, 50, 25, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_X2), rc.right - 110, 50, 110, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_Y2), rc.right - 110, 75, 110, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_Y2), rc.right - 140, 75, 25, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_TEXT_STATUS), rc.right - 450, 2, 130, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_TEXT_SEC), rc.right - 300, 100, 300, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_XS), rc.right - 300, 125, 25, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_XS), rc.right - 270, 125, 110, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_NEDIT_YS), rc.right - 140, 125, 25, 20, 0);
+	MoveWindow(GetDlgItem(hWnd, ID_EDIT_YS), rc.right - 110, 125, 110, 20, 0);
+
+	MoveWindow(GetDlgItem(hWnd, ID_LISTVIEW), rc.right - 300, 150, 300, rc.bottom - 100, 0);
 }

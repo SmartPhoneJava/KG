@@ -37,3 +37,8 @@ void cleanRectOld(HWND hWnd, LONG left,
 	LONG top, LONG right, LONG bottom);
 
 void cleanDisplay(HWND hWnd);
+
+void cleanRect(HDC hdc, RECT rect);
+
+void drawPicture(HWND hWnd, Table* table,
+	Secatel *sec, DWORD color);
