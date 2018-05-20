@@ -101,13 +101,22 @@ bool checkPoint(Secatel sec, Point point)
 // “очка пересечени€ с левым ребром секатора
 Point* borderLeft(Point *p, Secatel sec, double m)
 {
+	debug("p_x_left", p->x);
 	int x_new = sec.Xmin;
 	int y_new = NO_POINT;
 
 	if ((m == HORIZONTAL) || (m == VERTICAL))
 		y_new = p->y;
 	else
-		y_new = count(m, x_new, p->x, p->y);
+	{
+		debug("x_new_left", x_new);
+		debug("p_x_left", p->x);
+		debug("p_y_left", p->y);
+		debug("p_m_left", m);
+		y_new = m * (x_new - p->x) + p->y;
+		debug("y_n_left", y_new);
+		return newPoint(x_new, y_new);
+	}
 
 	return newPoint(x_new, y_new);
 }
@@ -164,7 +173,7 @@ typedef Point*(*Border)(Point *p,
 Point* move(Border border, Who who, Cut cut,
 	Secatel sec, double tg)
 {
-	Point *point = who(cut);
+	Point *point = newPoint(who(cut)->x, who(cut)->y);
 	Point *result = NULL;
 	if (point)
 		result = border(point, sec, tg);
@@ -180,16 +189,21 @@ void setIfFree(Secatel secatel, Point *from,
 	if (!from)
 		return;
 	if (!checkPoint(secatel, *from))
+	{
 		debug("bad 'from' in setIfFree", 184);
+		return;
+	}
 	if (isPointFree(to1))
 	{
 		to1.x = from->x;
 		to1.y = from->y;
+		debugPoint(to1, "to1", 1);
 	}
 	else if (isPointFree(to2))
 	{
 		to2.x = from->x;
 		to2.y = from->y;
+		debugPoint(to2, "to2", 2);
 	}
 }
 
@@ -203,12 +217,12 @@ Cut* cutInside(Cut cut, Secatel sec)
 	Point *up = NULL;
 	Point *down = NULL;
 
+	//debugDouble("tg", tg);
+
 	left = move(&borderLeft, &whoLeft, cut, sec, tg);
 	right = move(&borderRight, &whoRight, cut, sec, tg);
 	up = move(&borderUp, &whoUp, cut, sec, tg);
 	down = move(&borderDown, &whoDown, cut, sec, tg);
-
-	debugCutVisibility(cut, "it comes in cutInside", 0);
 
 	if (left)
 		debugPoint(*left, "left", 0);
@@ -221,6 +235,9 @@ Cut* cutInside(Cut cut, Secatel sec)
 
 	Point first;
 	Point second;
+
+	first = *newPoint(NO_POINT, NO_POINT);
+	second = *newPoint(NO_POINT, NO_POINT);
 
 	setIfFree(sec, left, first, second);
 	setIfFree(sec, right, first, second);

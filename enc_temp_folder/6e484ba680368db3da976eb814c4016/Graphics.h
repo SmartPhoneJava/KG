@@ -11,9 +11,9 @@
 #define BLACK RGB(0, 0, 0)
 #define WHITE RGB(255, 255, 255)
 
-void drawCut(HDC hdc, Cut *cut, DWORD color);
+void drawCut(HDC hdc, Cut cut, DWORD color);
 
-void drawCutInside(HDC hdc, Cut *cut,
+void drawCutInside(HDC hdc, Cut cut,
 	Secatel sec, DWORD color);
 
 void drawSecatel(HDC hdc, Secatel sec,

@@ -5,4 +5,4 @@
 #include "Secatel.h"
 #include <iostream>
 
-Cut* cutInside(Cut *cut, Secatel sec);
+Cut* cutInside(Cut cut, Secatel sec);

@@ -9,17 +9,19 @@
 
 typedef struct Cut
 {
-	Point begin;
-	Point end;
+	Point *begin;
+	Point *end;
 } Cut;
 
-double cutTan(Cut cut);
+double cutTan(Cut *cut);
 
-Cut* newCut(Point a, Point b);
+Cut* newCut(Point *a, Point *b);
 
 void deleteCut(Cut **cut);
 
-void debugCut(Cut cut, const char* text, int number);
+void debugCut(Cut *cut, const char* text, int number);
 
-void debugCutVisibility(Cut cut, const char* text, int number);
+void debugCutVisibility(Cut *cut, const char* text, int number);
+
+bool compareCuts(Cut* A, Cut *B);
 

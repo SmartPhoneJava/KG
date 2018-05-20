@@ -2,17 +2,17 @@
 #include "Cut.h"
 #include <iostream>
 
-int getCutDX(Cut *cut)
+int getCutDX(Cut cut)
 {
-	return cut->end->x - cut->begin->x;
+	return cut.end.x - cut.begin.x;
 }
 
-int getCutDY(Cut *cut)
+int getCutDY(Cut cut)
 {
-	return cut->end->y - cut->begin->y;
+	return cut.end.y - cut.begin.y;
 }
 
-Cut* newCut(Point *a, Point *b)
+Cut* newCut(Point a, Point b)
 {
 	Cut *cut = (Cut*)calloc(1, sizeof(Cut));
 	cut->begin = a;
@@ -26,7 +26,7 @@ void deleteCut(Cut **cut)
 	*cut = NULL;
 }
 
-double cutTan(Cut *cut)
+double cutTan(Cut cut)
 {
 	int dx = getCutDX(cut);
 	int dy = getCutDY(cut);
@@ -46,31 +46,24 @@ double cutTan(Cut *cut)
 	}
 }
 
-void debugCut(Cut *cut, const char* text, int number)
+void debugCut(Cut cut, const char* text, int number)
 {
 	debug(text, number);
-	debug("x1_cut", cut->begin->x);
-	debug("y1_cut", cut->begin->y);
-	debug("x2_cut", cut->end->x);
-	debug("y2_cut", cut->end->y);
+	debug("x1_cut", cut.begin.x);
+	debug("y1_cut", cut.begin.y);
+	debug("x2_cut", cut.end.x);
+	debug("y2_cut", cut.end.y);
 }
 
-void debugCutVisibility(Cut *cut, const char* text, int number)
+void debugCutVisibility(Cut cut, const char* text, int number)
 {
 	debug(text, number);
 
-	Visibility v1 = cut->begin->vis;
-	Visibility v2 = cut->end->vis;
+	Visibility v1 = cut.begin.vis;
+	Visibility v2 = cut.end.vis;
 
 	debugVisibility(v1, "Visibility of first point",
 		isPointVisible(v1));
 	debugVisibility(v2, "Visibility of second point",
 		isPointVisible(v2));
-}
-
-bool compareCuts(Cut* A, Cut *B)
-{
-	bool begin = comparePoints(A->begin, B->begin);
-	bool end = comparePoints(A->end, B->end);
-	return (begin && end);
 }

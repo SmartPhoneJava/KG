@@ -12,3 +12,12 @@ void debug(const char* text, int number)
 
 	OutputDebugString(str);
 }
+
+void debugDouble(const char* text, double number)
+{
+
+	char str[BUFFER_MAX_SIZE];
+	sprintf_s(str, "%s: %f \n", text, number);
+
+	OutputDebugString(str);
+}

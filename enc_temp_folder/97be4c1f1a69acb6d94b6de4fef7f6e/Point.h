@@ -18,8 +18,6 @@ void deletePoint(Point **point);
 
 void setPointVisibility(Point &p, Secatel s);
 
-bool isPointFree(Point *point);
+bool isPointFree(Point point);
 
-void debugPoint(Point *point, const char* text, int number);
-
-bool comparePoints(Point *A, Point *B);
+void debugPoint(Point point, const char* text, int number);

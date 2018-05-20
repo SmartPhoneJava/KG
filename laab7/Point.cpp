@@ -17,17 +17,16 @@ void deletePoint(Point **point)
 	*point = NULL;
 }
 
-bool isPointFree(Point point)
+bool isPointFree(Point *point)
 {
-	bool x = (point.x == NO_POINT);
-	bool y = (point.y == NO_POINT);
+	bool x = (point->x == NO_POINT);
+	bool y = (point->y == NO_POINT);
 	return (x && y);
 }
 
 void setPointVisibility(Point &p, Secatel s)
 {
 	int t1, t2, t3, t4;
-	//debug("try to set Visibility", 0);
 	if (p.x < s.Xmin)  
 		t1 = 1;
 	else
@@ -51,9 +50,16 @@ void setPointVisibility(Point &p, Secatel s)
 	p.vis = *newVisibility(t1, t2, t3, t4);
 }
 
-void debugPoint(Point point, const char* text, int number)
+void debugPoint(Point *point, const char* text, int number)
 {
 	debug(text, number);
-	debug("x_point", point.x);
-	debug("y_point", point.y);
+	debug("x_point", point->x);
+	debug("y_point", point->y);
+}
+
+bool comparePoints(Point *A, Point *B)
+{
+	bool x = (A->x == B->x);
+	bool y = (A->y == B->y);
+	return (x && y);
 }

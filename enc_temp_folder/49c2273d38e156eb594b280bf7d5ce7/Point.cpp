@@ -27,7 +27,7 @@ bool isPointFree(Point point)
 void setPointVisibility(Point &p, Secatel s)
 {
 	int t1, t2, t3, t4;
-	debug("try to set Visibility", 0);
+	//debug("try to set Visibility", 0);
 	if (p.x < s.Xmin)  
 		t1 = 1;
 	else
