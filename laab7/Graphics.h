@@ -42,3 +42,6 @@ void cleanRect(HDC hdc, RECT rect);
 
 void drawPicture(HWND hWnd, Table* table,
 	Secatel *sec, DWORD color);
+
+void drawTableInside(HDC hdc, Table *table,
+	Secatel sec, DWORD color);

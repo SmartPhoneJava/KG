@@ -11,8 +11,7 @@ void setCharText(HWND hwnd, const char* text);
 void setIntText(HWND hWnd, int ID, int d);
 
 void mouseClicked(LPARAM lParam, int borderX,
-	 int &x, int &y, bool can, HWND hWnd,
-	int ID1, int ID2);
+	 int &x, int &y, HWND hWnd, int ID1, int ID2);
 
 void deleteListViewItem(HWND listview, int i);
 

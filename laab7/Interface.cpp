@@ -29,10 +29,9 @@ x, y - значения параметров которые обновятся
 count - счётчик кликов
 */
 void mouseClicked(LPARAM lParam, int borderX,
-	int &x, int &y, bool can, HWND hWnd,
-	int ID1, int ID2)
+	int &x, int &y, HWND hWnd, int ID1, int ID2)
 {
-	if ((LOWORD(lParam) < borderX) && can)
+	if (LOWORD(lParam) < borderX)
 	{
 		x = LOWORD(lParam);
 		y = HIWORD(lParam);

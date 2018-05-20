@@ -18,11 +18,11 @@ void drawLine(HDC hdc, int X1, int Y1,
 void drawEllipse(HDC hdc, int X,
 	int Y, int rad, DWORD color)
 {
-	HBRUSH hBrush = CreateSolidBrush(color);
+	HPEN hPen = CreatePen(PS_SOLID, 1, color);
 
-	SelectObject(hdc, hBrush);
+	SelectObject(hdc, hPen);
 	Ellipse(hdc, X - rad, Y - rad, X + rad, Y + rad);
-	DeleteObject(hBrush);
+	DeleteObject(hPen);
 }
 
 // Рисование точки
@@ -37,10 +37,12 @@ void drawPoint(HDC hdc, Point *p,
 void draw2Points(HDC hdc, Point *p1,
 	Point *p2, DWORD color)
 {
+	debugPoint(p1, "p1", isPointFree(p1));
+	debugPoint(p2, "p2", isPointFree(p2));
 	if (isPointFree(p1))
-		drawPoint(hdc, p1, 3, color);
-	else if (isPointFree(p2))
 		drawPoint(hdc, p2, 3, color);
+	else if (isPointFree(p2))
+		drawPoint(hdc, p1, 3, color);
 	else
 	{
 		drawLine(hdc, p1->x, p1->y, p2->x, p2->y, color);
@@ -57,9 +59,23 @@ void drawCut(HDC hdc, Cut *cut, DWORD color)
 void drawCutInside(HDC hdc, Cut *cut,
 	Secatel sec, DWORD color)
 {
+	debugCut(cut, "cutInside", 1);
 	debugCut(cutInside(cut, sec), "cutInside", 0);
-	debugCut(cutInside(cut, sec), "cutInside", 1);
 	drawCut(hdc, cutInside(cut, sec), color);
+}
+
+// Рисование отрезков таблицы внутри секатора
+void drawTableInside(HDC hdc, Table *table,
+	Secatel sec, DWORD color)
+{
+	Table* mov = table;
+	int size = 0;
+	while (mov)
+	{
+		size++;
+		drawCutInside(hdc, mov->cut, sec, color);
+		mov = mov->next;
+	}
 }
 
 // Рисование секатора

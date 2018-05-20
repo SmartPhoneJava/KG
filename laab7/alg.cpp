@@ -74,7 +74,10 @@ bool checkHorizontal(Secatel secatel, int b)
 {
 	int a = secatel.Xmin;
 	int c = secatel.Xmax;
-	return checkBorder(a, b, c);
+	if (a < c)
+		return checkBorder(a, b, c);
+	else
+		return checkBorder(c, b, a);
 }
 
 // ѕроверить, что y лежит внутри секатора
@@ -82,7 +85,10 @@ bool checkVertical(Secatel secatel, int b)
 {
 	int a = secatel.Ymin;
 	int c = secatel.Ymax;
-	return checkBorder(a, b, c);
+	if (a < c)
+		return checkBorder(a, b, c);
+	else
+		return checkBorder(c, b, a);
 }
 
 // ѕроверить, что точка лежит внутри секатора
@@ -173,6 +179,8 @@ typedef Point*(*Border)(Point *p,
 Point* move(Border border, Who who, Cut *cut,
 	Secatel sec, double tg)
 {
+	if (!who(cut))
+		return NULL;
 	Point *point = newPoint(who(cut)->x, who(cut)->y);
 	Point *result = NULL;
 	if (point)
@@ -188,22 +196,27 @@ void setIfFree(Secatel secatel, Point *from,
 {
 	if (!from)
 		return;
+	
 	if (!checkPoint(secatel, *from))
 	{
-		//debug("bad 'from' in setIfFree", 184);
+		debugPoint(from, "bad 'from' in setIfFree", 184);
+		debugSecatel (secatel, "a;so", 0);
 		return;
 	}
+	debugPoint(from, "dd", 9);
+	debugPoint(to1, "to", 9);
+	
 	if (isPointFree(to1))
 	{
 		to1->x = from->x;
 		to1->y = from->y;
-		//debugPoint(to1, "to1", 1);
+		debugPoint(to1, "to1", 1);
 	}
 	else if (isPointFree(to2))
 	{
 		to2->x = from->x;
 		to2->y = from->y;
-		//debugPoint(to2, "to2", 2);
+		debugPoint(to2, "to2", 2);
 	}
 }
 
@@ -212,6 +225,9 @@ Cut* cutInside(Cut *cut, Secatel sec)
 {
 	double tg = cutTan(cut);
 
+	setPointVisibility(*(cut->begin), sec);
+	setPointVisibility(*(cut->end), sec);
+
 	Point *left = NULL;
 	Point *right = NULL;
 	Point *up = NULL;
@@ -219,10 +235,14 @@ Cut* cutInside(Cut *cut, Secatel sec)
 
 	//debugDouble("tg", tg);
 
+	debugSecatel(sec, "sss", 0);
+
 	left = move(&borderLeft, &whoLeft, cut, sec, tg);
 	right = move(&borderRight, &whoRight, cut, sec, tg);
 	up = move(&borderUp, &whoUp, cut, sec, tg);
 	down = move(&borderDown, &whoDown, cut, sec, tg);
+
+	debugSecatel(sec, "sss", 0);
 
 	if (left)
 		debugPoint(left, "left", 0);
@@ -241,5 +261,8 @@ Cut* cutInside(Cut *cut, Secatel sec)
 	setIfFree(sec, up, first, second);
 	setIfFree(sec, down, first, second);
 
-	return newCut(first, second);
+	Cut* cuttt = newCut(first, second);
+
+	debugCut(cuttt, "cutttt", 8);
+	return cuttt;
 }
