@@ -20,6 +20,11 @@ Cut* newCut(Point *a, Point *b)
 	return cut;
 }
 
+Cut* newCutInt(int x1, int y1, int x2, int y2)
+{
+	return newCut(newPoint(x1, y1), newPoint(x2, y2));
+}
+
 void deleteCut(Cut **cut)
 {
 	free(*cut);

@@ -17,6 +17,8 @@ double cutTan(Cut *cut);
 
 Cut* newCut(Point *a, Point *b);
 
+Cut* newCutInt(int x1, int y1, int x2, int y2);
+
 void deleteCut(Cut **cut);
 
 void debugCut(Cut *cut, const char* text, int number);

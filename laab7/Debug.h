@@ -1,6 +1,5 @@
 #pragma once
-
-#define BUFFER_MAX_SIZE 128
+#include "Resource.h"
 
 void debug(const char* text, int number);
 

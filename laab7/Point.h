@@ -2,8 +2,7 @@
 #include "Visibility.h"
 #include "Secatel.h"
 #include "Debug.h"
-
-#define NO_POINT -1
+#include "Resource.h"
 
 typedef struct Point
 {
